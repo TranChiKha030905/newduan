@@ -176,3 +176,8 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     socketio.run(app, debug=True, host='0.0.0.0', port=5000, ssl_context=('cert.pem', 'key.pem'))
+    @app.cli.command("init-db")
+def init_db_command():
+    """Tạo các bảng trong database."""
+    db.create_all()
+    print("Đã khởi tạo database.")
