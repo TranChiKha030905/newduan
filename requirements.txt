@@ -1,0 +1,13 @@
+# Các thư viện chính của web app
+Flask
+Flask-SocketIO
+Flask-SQLAlchemy
+Flask-Login
+Werkzeug
+
+# Ghim phiên bản SQLAlchemy để tránh xung đột
+SQLAlchemy<2.0
+
+# Các thư viện cho server production
+gunicorn
+eventlet

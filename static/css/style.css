@@ -1,0 +1,207 @@
+/* --- CÀI ĐẶT CHUNG --- */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden; /* Chống cuộn trang */
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+input[type="text"], input[type="password"] {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* --- HEADER --- */
+.header {
+    flex-shrink: 0; /* Không co lại */
+    padding: 15px 20px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+
+.logout-btn {
+    text-decoration: none;
+    padding: 8px 15px;
+    background-color: #d9534f;
+    color: white;
+    border-radius: 4px;
+}
+
+/* --- TRANG CHỜ (LOBBY) & TRANG ĐĂNG NHẬP --- */
+.auth-container, .lobby-container {
+    margin: auto; /* Căn giữa màn hình */
+    text-align: center;
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 350px;
+}
+
+.auth-container form, .lobby-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* --- LAYOUT CHÍNH CỦA PHÒNG HỌP --- */
+.call-wrapper {
+    display: flex;
+    flex-grow: 1; /* Chiếm hết không gian còn lại */
+    overflow: hidden;
+}
+
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 10px;
+}
+
+/* --- HỘP MỜI --- */
+#invite-box {
+    flex-shrink: 0;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin: 0 auto 10px auto;
+    width: fit-content;
+}
+
+#invite-link-input {
+    min-width: 300px;
+}
+
+.invite-link-wrapper {
+    display: flex;
+}
+
+/* --- LƯỚI VIDEO --- */
+#video-grid {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 10px;
+    overflow-y: auto; /* Cho phép cuộn nếu nhiều video */
+}
+
+.video-container {
+    position: relative;
+    background: black;
+    border-radius: 8px;
+    overflow: hidden;
+    min-height: 200px; /* Chiều cao tối thiểu */
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-label {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* --- NÚT ĐIỀU KHIỂN --- */
+.controls {
+    flex-shrink: 0;
+    background: #333;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+/* --- CHATBOX (SIDEBAR) --- */
+#chat-container.sidebar {
+    flex-shrink: 0;
+    width: 320px;
+    background: white;
+    border-left: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#chat-container h3 {
+    text-align: center;
+    margin-top: 0;
+}
+
+#messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    padding: 10px;
+    margin-bottom: 10px;
+    word-wrap: break-word; /* Chống tràn chữ */
+}
+
+#messages p {
+    margin: 0 0 10px 0;
+}
+
+.chat-input {
+    display: flex;
+    gap: 5px;
+}
+
+#chat-input-msg {
+    flex-grow: 1;
+}
+.hidden {
+    display: none;
+}
+
+.chat-action-btn {
+    padding: 0 12px;
+    font-size: 18px;
+    background-color: #6c757d;
+}
+
+.chat-action-btn:hover {
+    background-color: #5a6268;
+}
+
+#messages img {
+    max-width: 100%;
+    border-radius: 5px;
+    margin-top: 5px;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Call - Room {{ room_id }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <div class="header">
+        <span>Room: <strong>{{ room_id }}</strong> | User: <strong>{{ current_user.username }}</strong></span>
+        <a href="{{ url_for('index') }}" class="logout-btn">Leave Room</a>
+    </div>
+
+    <div class="call-wrapper">
+        <div class="main-content">
+            <div id="invite-box">
+                <p>Mời người khác vào phòng:</p>
+                <div class="invite-link-wrapper">
+                    <input type="text" id="invite-link-input" readonly>
+                    <button id="copy-invite-btn">Sao chép</button>
+                </div>
+            </div>
+
+            <div id="video-grid">
+                <div class="video-container">
+                    <video id="local-video" autoplay muted playsinline></video>
+                    <div class="video-label">{{ current_user.username }} (You)</div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="toggle-mic-btn">Mute Mic</button>
+                <button id="toggle-video-btn">Hide Video</button>
+                <button id="share-screen-btn">Share Screen</button>
+            </div>
+        </div>
+
+        <div id="chat-container" class="sidebar">
+                <h3>Chat</h3>
+            <div id="messages"></div>
+            <div class="chat-input">
+                <button id="send-image-btn" class="chat-action-btn">🖼️</button>
+                <input type="file" id="image-input" accept="image/*" class="hidden">
+        
+                <input type="text" id="chat-input-msg" placeholder="Type a message...">
+                <button id="send-chat-btn">Send</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>const ROOM_ID = "{{ room_id }}";</script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

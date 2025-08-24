@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome - Video Call</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="header">
+        <span>Welcome, <strong>{{ current_user.username }}</strong>!</span>
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    </div>
+
+    <div class="lobby-container">
+        <h1>Start or Join a Meeting</h1>
+        <div class="lobby-actions">
+            <a href="{{ url_for('new_room') }}" class="btn-primary">Create a New Room</a>
+            <form id="join-form" class="join-form">
+                <input type="text" id="room-id-input" placeholder="Enter a room code">
+                <button type="submit" class="btn-secondary">Join</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.getElementById('join-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const roomId = document.getElementById('room-id-input').value.trim();
+            if (roomId) {
+                window.location.href = '/room/' + roomId;
+            }
+        });
+    </script>
+</body>
+</html>
