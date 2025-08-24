@@ -6,7 +6,7 @@ from flask_socketio import SocketIO, join_room, leave_room, emit
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
-import uuid # Thư viện để tạo mã phòng ngẫu nhiên
+import uuid
 
 # --- CẤU HÌNH ỨNG DỤNG VÀ DATABASE ---
 app = Flask(__name__)
@@ -88,20 +88,18 @@ def logout():
 @app.route('/new-room')
 @login_required
 def new_room():
-    # Tạo một mã phòng ngẫu nhiên và duy nhất
     room_id = str(uuid.uuid4().hex)[:6]
     return redirect(url_for('room', room_id=room_id))
 
 @app.route('/room/<room_id>')
 @login_required
 def room(room_id):
-    # Trang vào phòng họp
     return render_template('room.html', room_id=room_id)
 
 # --- LOGIC SOCKET.IO CHO VIDEO CALL ---
 
 rooms = {}
-sid_to_user = {} # **MỚI**: Dictionary để map sid với username
+sid_to_user = {}
 
 @socketio.on('connect')
 @login_required
@@ -114,11 +112,10 @@ def on_disconnect():
     username = sid_to_user.get(request.sid, 'Unknown')
     print(f"Client disconnected: {username} ({request.sid})")
     
-    # Xóa người dùng khỏi sid_to_user map
     if request.sid in sid_to_user:
         del sid_to_user[request.sid]
 
-    for room_id, users in rooms.items():
+    for room_id, users in list(rooms.items()):
         if request.sid in users:
             users.remove(request.sid)
             leave_room(room_id)
@@ -138,7 +135,6 @@ def on_join_room(data):
         rooms[room_id] = []
     rooms[room_id].append(request.sid)
 
-    # **NÂNG CẤP**: Gửi danh sách người dùng kèm username
     other_users_data = []
     for user_sid in rooms[room_id]:
         if user_sid != request.sid:
@@ -160,24 +156,28 @@ def on_signal(data):
         'data': signal_data
     }, room=target_sid)
 
-# **MỚI**: Thêm logic xử lý chat phía server
 @socketio.on('send-message')
 @login_required
 def on_send_message(data):
     room_id = data.get('room_id')
     message = data.get('message')
+    msg_type = data.get('type', 'text')
     if room_id in rooms:
+        # Sửa lại để không gửi về cho chính người gửi
         emit('receive-message', {
             'sender_username': current_user.username,
-            'message': message
-        }, room=room_id)
+            'message': message,
+            'type': msg_type
+        }, room=room_id, skip_sid=request.sid)
 
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-    socketio.run(app, debug=True, host='0.0.0.0', port=5000, ssl_context=('cert.pem', 'key.pem'))
-    @app.cli.command("init-db")
+# --- LỆNH ĐỂ KHỞI TẠO DATABASE ---
+# **ĐÃ SỬA**: Đưa ra ngoài phạm vi global, không nằm trong 'if'
+@app.cli.command("init-db")
 def init_db_command():
     """Tạo các bảng trong database."""
     db.create_all()
     print("Đã khởi tạo database.")
+
+# --- ĐIỂM CHẠY ỨNG DỤNG CHO LOCAL DEV ---
+if __name__ == '__main__':
+    socketio.run(app, debug=True, host='0.0.0.0', port=5000, ssl_context=('cert.pem', 'key.pem'))
